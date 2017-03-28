@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+ <title>noobranu</title>
+ <link href="http://www.noobranu.com/atom.xml" rel="self"/>
+ <link href="http://www.noobranu.com/"/>
+ <updated>2017-02-20T16:40:24+05:30</updated>
+ <id>http://www.noobranu.com</id>
+ <author>
+   <name>ranu</name>
+   <email>ranuzz@outlook.com</email>
+ </author>
+
+ 
+ <entry>
+   <title>Chat analysis</title>
+   <link href="http://www.noobranu.com/2017/02/20/chat-analysis-using-R/"/>
+   <updated>2017-02-20T00:00:00+05:30</updated>
+   <id>http://www.noobranu.com/2017/02/20/chat-analysis-using-R</id>
+   <content type="html">&lt;h1 id=&quot;chat-analysis-google-hangout-and-whatsapp&quot;&gt;Chat analysis (google hangout and whatsapp)&lt;/h1&gt;
+&lt;p&gt;little experiment I did last year, using R NLP librarires and hangout and whatsapp data.&lt;/p&gt;
+
+&lt;h3 id=&quot;github-link&quot;&gt;&lt;a href=&quot;https://github.com/ranuzz/chatAnalysis&quot;&gt;&lt;strong&gt;GitHub Link&lt;/strong&gt;&lt;/a&gt;&lt;/h3&gt;
+
+&lt;h3 id=&quot;gettingcleaning-hangout-data&quot;&gt;Getting/Cleaning hangout data&lt;/h3&gt;
+&lt;p&gt;Hangout data can be downloaded using google takeaway. The data that I used and tested is from 2014-2015 timeframe.
+JSON file provided by google is very huge and requires knowledge of data format to 
+extract the conversation so I used https://bitbucket.org/dotcs/hangouts-log-reader/ tool to extract the convertion&lt;/p&gt;
+
+&lt;p&gt;after processing the output of ‘hangout_reader.py’ I had the file in this format:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;2014-02-18 16:44:22: &amp;lt;1author-1&amp;gt; message &lt;br /&gt;
+2014-02-18 16:44:33: &amp;lt;2author-2&amp;gt; message&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;gettingcleaning-whatsapp-data&quot;&gt;Getting/Cleaning whatsapp data&lt;/h3&gt;
+&lt;p&gt;Getting whatsapp data was straight forward. Just emailed the conversation to my inbox. only problem was that the format
+slightyly changed in between 2014 and 2015. so I had to use two different parsing code.&lt;/p&gt;
+
+&lt;p&gt;2014 format&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;09:53, 21 Jan - 1author-1: message &lt;br /&gt;
+09:57, 24 Jan - 2author-2: message&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;2015 format&lt;/p&gt;
+&lt;blockquote&gt;
+  &lt;p&gt;20/05/2015, 1:18 PM - 1author-1: message &lt;br /&gt;
+20/05/2015, 1:18 PM - 2author-2: message&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h3 id=&quot;final-data-format&quot;&gt;Final data format&lt;/h3&gt;
+&lt;p&gt;Final data was exported to individual CSV files &lt;em&gt;(cleanChat.c)&lt;/em&gt; with following columns&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;year&lt;/li&gt;
+  &lt;li&gt;month&lt;/li&gt;
+  &lt;li&gt;day&lt;/li&gt;
+  &lt;li&gt;hour&lt;/li&gt;
+  &lt;li&gt;minute&lt;/li&gt;
+  &lt;li&gt;author&lt;/li&gt;
+  &lt;li&gt;message&lt;/li&gt;
+  &lt;li&gt;source&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;data-input&quot;&gt;Data input&lt;/h3&gt;
+&lt;p&gt;datain.R : to input data&lt;/p&gt;
+
+&lt;h3 id=&quot;wordcloud&quot;&gt;WordCloud&lt;/h3&gt;
+&lt;p&gt;wordcloud.R : Generates a basic wordcloud
+libraries&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;slam&lt;/li&gt;
+  &lt;li&gt;tm&lt;/li&gt;
+  &lt;li&gt;wordcloud&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;ggplot2&quot;&gt;GGplot2&lt;/h3&gt;
+&lt;p&gt;ggplot2.R : Generates a basic graph
+library&lt;/p&gt;
+&lt;ul&gt;
+  &lt;li&gt;ggplot2&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h3 id=&quot;other-details&quot;&gt;Other details&lt;/h3&gt;
+&lt;p&gt;R version : 3.2.5&lt;/p&gt;
+
+&lt;h3 id=&quot;further-work&quot;&gt;further work&lt;/h3&gt;
+&lt;p&gt;will add more experiments soon.&lt;/p&gt;
+</content>
+ </entry>
+ 
+
+</feed>

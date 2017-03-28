@@ -1,0 +1,27 @@
+# Permalinks
+#
+# Use of `relative_permalinks` ensures post links from the index work properly.
+permalink:           pretty
+relative_permalinks: true
+
+# Setup
+title:               noobranu
+tagline:             'so noob'
+description:         'I know nothing about everything'
+url:                 http://www.noobranu.com
+baseurl:             ''
+paginate:            5
+
+# About/contact
+author:
+  name:              ranu
+  url:               http://www.noobranu.com
+  email:             ranuzz@outlook.com
+
+# Custom vars
+version:             1.0.0
+
+# Plugins
+gems:                ["jekyll-paginate"]
+
+relative_permalinks: false
