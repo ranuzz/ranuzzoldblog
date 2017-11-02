@@ -97,6 +97,253 @@
   
   <div class="post">
     <h1 class="post-title">
+      <a href="/2017/11/02/running-dynamodb/">
+        Running DynamoDB - (downloadable version)
+      </a>
+    </h1>
+
+    <span class="post-date">02 Nov 2017</span>
+
+    <h2 id="setup">setup</h2>
+<ul>
+  <li>Ubuntu 16.04.1 LTS VirtualBox VM : Ubuntu Server</li>
+  <li><a href="http://docs.aws.amazon.com/amazondynamodb/latest/gettingstartedguide/GettingStarted.Download.html">Dwonload link</a></li>
+  <li>Using Python 2.7.12</li>
+</ul>
+
+<h2 id="installing-dynamodb">installing DynamoDB</h2>
+<ul>
+  <li>Extract the tarball</li>
+  <li>run : java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb -inMemory</li>
+</ul>
+
+<h2 id="installing-boto3">installing Boto3</h2>
+<ul>
+  <li>sudo apt-get install python-boto3</li>
+</ul>
+
+<h2 id="testing">Testing</h2>
+<ul>
+  <li>running example <a href="http://docs.aws.amazon.com/amazondynamodb/latest/gettingstartedguide/GettingStarted.Python.01.html">MoviesCreateTable.py</a></li>
+</ul>
+
+<blockquote>
+  <p>script will through follwing error without a valid AWS credential &lt;/br&gt;
+botocore.exceptions.NoCredentialsError: Unable to locate credentials</p>
+</blockquote>
+
+<h3 id="creating-an-aws-credential-file">creating an AWS credential file</h3>
+<ul>
+  <li><a href="http://boto3.readthedocs.io/en/latest/guide/quickstart.html">Quick link</a></li>
+  <li>save it in ~/.aws/credentials</li>
+</ul>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>[default]
+aws_access_key_id = &lt;KEY&gt;
+aws_secret_access_key = &lt;KEY&gt;
+region=&lt;REGION&gt;
+</code></pre>
+</div>
+<ul>
+  <li>after this the test script should print confirmation
+    <blockquote>
+      <p>Table status: ACTIVE</p>
+    </blockquote>
+  </li>
+</ul>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="/2017/11/02/data-analysis-notes/">
+        Data Analysis Notes - Python
+      </a>
+    </h1>
+
+    <span class="post-date">02 Nov 2017</span>
+
+    <h2 id="common-terms">Common terms</h2>
+<ul>
+  <li><strong>mean</strong> (np.mean()): average</li>
+  <li><strong>spread</strong>: A measure of how spread out the values in a distribution are</li>
+  <li><strong>variance</strong> (np.var()) : A summary statistic often used to quantify spread</li>
+  <li><strong>standard deviation</strong> (np.std()) : The square root of variance, also used as a measure of spread</li>
+  <li><strong>mode</strong> : the value that appears most often in a set of data. <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.mode.html">scipy-func</a>
+    <div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c"># mode calculation using scipy</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">])</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
+<span class="n">stats</span><span class="o">.</span><span class="n">mode</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+</code></pre>
+    </div>
+  </li>
+  <li><strong>normal distribution</strong> : An idealization of a bell-shaped distribution; also known as a Gaussian distribution</li>
+  <li><strong>uniform distribution</strong>: A distribution in which all values have the same
+frequency</li>
+  <li><strong>tail</strong>: The part of a distribution at the high and low extremes</li>
+  <li><strong>outlier</strong>: A value far from the central tendency</li>
+  <li><strong>normalization</strong> : <a href="https://en.wikipedia.org/wiki/Normalization_(statistics)">wiki</a></li>
+  <li><strong>PMF</strong> : Probability mass function (PMF) a representation of a distribution as a function that maps from values to probabilities. good for small dataset</li>
+  <li><strong>CMF</strong> : cumulative distribution function <a href="https://en.wikipedia.org/wiki/Cumulative_distribution_function">wiki</a> , <a href="https://en.wikipedia.org/wiki/Quantile">quantile</a> , <a href="http://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.quantile.html">pandas-quantile</a> , <a href="https://docs.scipy.org/doc/numpy-dev/reference/generated/numpy.percentile.html">numpy-percentile</a></li>
+</ul>
+
+<h2 id="pearsons-r">Pearson’s R</h2>
+<p><a href="https://en.wikipedia.org/wiki/Pearson_correlation_coefficient"><strong>wiki</strong></a></p>
+
+<blockquote>
+  <p>ranges  from -1 to 1 and represents correlation</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="c"># x, y are numpy array or pandas series</span>
+<span class="k">def</span> <span class="nf">pearson_r</span><span class="p">(</span><span class="n">x</span> <span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+
+    <span class="c">#standardize x and y</span>
+    <span class="n">xstd</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">-</span> <span class="n">x</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span><span class="o">/</span><span class="n">x</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+    <span class="n">ystd</span> <span class="o">=</span> <span class="p">(</span><span class="n">y</span> <span class="o">-</span> <span class="n">y</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span><span class="o">/</span><span class="n">y</span><span class="o">.</span><span class="n">std</span><span class="p">()</span>
+
+    <span class="n">pr</span> <span class="o">=</span> <span class="p">(</span><span class="n">xstd</span><span class="o">*</span><span class="n">ystd</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">pr</span>
+</code></pre>
+</div>
+
+<h2 id="effect-size">Effect size</h2>
+<p><a href="https://en.wikipedia.org/wiki/Effect_size#Cohen.27s_d"><strong>wiki cohen’s d</strong></a></p>
+<blockquote>
+  <p>describes the size of an effect</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">CohenEffectSize</span><span class="p">(</span><span class="n">group1</span><span class="p">,</span> <span class="n">group2</span><span class="p">):</span>
+    <span class="s">"""Computes Cohen's effect size for two groups.
+    
+    group1: Series or DataFrame
+    group2: Series or DataFrame
+    
+    returns: float if the arguments are Series;
+             Series if the arguments are DataFrames
+    """</span>
+    <span class="n">diff</span> <span class="o">=</span> <span class="n">group1</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">-</span> <span class="n">group2</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+    <span class="n">var1</span> <span class="o">=</span> <span class="n">group1</span><span class="o">.</span><span class="n">var</span><span class="p">()</span>
+    <span class="n">var2</span> <span class="o">=</span> <span class="n">group2</span><span class="o">.</span><span class="n">var</span><span class="p">()</span>
+    <span class="n">n1</span><span class="p">,</span> <span class="n">n2</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">group1</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">group2</span><span class="p">)</span>
+
+    <span class="n">pooled_var</span> <span class="o">=</span> <span class="p">(</span><span class="n">n1</span> <span class="o">*</span> <span class="n">var1</span> <span class="o">+</span> <span class="n">n2</span> <span class="o">*</span> <span class="n">var2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">n1</span> <span class="o">+</span> <span class="n">n2</span><span class="p">)</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="n">diff</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">pooled_var</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">d</span>
+    
+</code></pre>
+</div>
+
+<h2 id="anlaytical-distributions">Anlaytical Distributions</h2>
+<blockquote>
+  <p>used to fit an empirical distribution (the distribution of actual data)</p>
+  <ul>
+    <li>exponential distribution</li>
+    <li>normal distribution (Gaussian) : charaterstic parameters : mean and std (standard mean = 0, std = 1)</li>
+    <li><a href="https://en.wikipedia.org/wiki/Normal_probability_plot">Normal probability Plot</a> : A plot of the values in a sample versus random values from a standard normal distribution. used to identify outliers, skewness, kurtosis, a need for transformations, and mixtures</li>
+    <li><a href="https://en.wikipedia.org/wiki/Log-normal_distribution">log-normal distribution</a></li>
+    <li><a href="https://en.wikipedia.org/wiki/Pareto_distribution">pareto distribution</a></li>
+  </ul>
+</blockquote>
+
+<h2 id="pdf--probability-density-function">PDF : probability density function</h2>
+<blockquote>
+  <p>derivative of CDF (description?)<br />
+integral of continuous PDF gives expected value
+<a href="https://www.youtube.com/watch?v=Fvi9A_tEmXQ">video</a></p>
+  <ul>
+    <li><a href="https://en.wikipedia.org/wiki/Kernel_density_estimation">KDE</a> : is an algorithm that takes a sample and finds an appropriately smooth PDF that fits the data. use cases : visualization, Interpolation, Simulation</li>
+  </ul>
+</blockquote>
+
+<p>A framework that relates representations of distribution func-
+tions.
+from
+<img src="public/pmf_cdf_pdf.JPG" alt="PMF-CDF-PDF" /></p>
+
+<ul>
+  <li>pearson’s median skewness <a href="https://en.wikipedia.org/wiki/Skewness#Pearson.27s_second_skewness_coefficient_.28median_skewness.29">wiki</a></li>
+</ul>
+
+<blockquote>
+  <p>positive, negative or zero.</p>
+</blockquote>
+
+<div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">PearsonMedianSkewness</span><span class="p">(</span><span class="n">xs</span><span class="p">):</span>
+    <span class="n">median</span> <span class="o">=</span> <span class="n">Median</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span>
+    <span class="n">mean</span> <span class="o">=</span> <span class="n">RawMoment</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">var</span> <span class="o">=</span> <span class="n">CentralMoment</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">std</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">var</span><span class="p">)</span>
+    <span class="n">gp</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="p">(</span><span class="n">mean</span> <span class="o">-</span> <span class="n">median</span><span class="p">)</span> <span class="o">/</span> <span class="n">std</span>
+    <span class="k">return</span> <span class="n">gp</span>
+</code></pre>
+</div>
+
+<h2 id="multivariate">Multivariate</h2>
+
+<ul>
+  <li>scatter plot : with and without jitter</li>
+  <li>covariance :measure of the tendency of two variables to vary together
+    <div class="language-python highlighter-rouge"><pre class="highlight"><code><span class="k">def</span> <span class="nf">Cov</span><span class="p">(</span><span class="n">xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">meanx</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">meany</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+  <span class="n">xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span>
+  <span class="n">ys</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">ys</span><span class="p">)</span>
+
+  <span class="k">if</span> <span class="n">meanx</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+      <span class="n">meanx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">meany</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+      <span class="n">meany</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">ys</span><span class="p">)</span>
+
+  <span class="n">cov</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">xs</span><span class="o">-</span><span class="n">meanx</span><span class="p">,</span> <span class="n">ys</span><span class="o">-</span><span class="n">meany</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">xs</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">cov</span>
+</code></pre>
+    </div>
+  </li>
+  <li>
+    <p>correlation : statistic intended to quantify the strength of the relationship between two variables.
+```python
+def Corr(xs, ys):
+  xs = np.asarray(xs)
+  ys = np.asarray(ys)</p>
+
+    <p>meanx, varx = thinkstats2.MeanVar(xs)
+  meany, vary = thinkstats2.MeanVar(ys)</p>
+
+    <p>corr = Cov(xs, ys, meanx, meany) / np.sqrt(varx * vary)
+  return corr</p>
+  </li>
+</ul>
+
+<p>np.corrcoef(xs, ys)</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>
+* Pearson's correlation : defined above (Corr) : is not robust in the presence of outliers, and it tends to underestimate the strength of non-linear relationships.
+* Spearman's correlation is more robust, and it can handle non-linear relationships as long as they are monotonic. Here's a function that computes Spearman's correlation
+```python
+import pandas as pd
+
+def SpearmanCorr(xs, ys):
+    xranks = pd.Series(xs).rank()
+    yranks = pd.Series(ys).rank()
+    return Corr(xranks, yranks)
+</code></pre>
+</div>
+<ul>
+  <li><a href="https://en.wikipedia.org/wiki/Correlation_and_dependence">interseting link</a> , 
+<a href="https://en.wikipedia.org/wiki/Correlation_does_not_imply_causation">one more</a></li>
+</ul>
+
+<h2 id="estimation-later-">estimation :later !!!</h2>
+
+<h2 id="hypothesis-testing-">hypothesis testing ??</h2>
+
+<h2 id="chi-squared-test"><a href="https://en.wikipedia.org/wiki/Chi-squared_test">chi-squared test</a></h2>
+
+<h2 id="central-limit-theoram">central limit theoram</h2>
+
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
       <a href="/2017/05/09/Exploring-logistic-regression-debugging-approach/">
         Exploring logistic regression debugging approach
       </a>
